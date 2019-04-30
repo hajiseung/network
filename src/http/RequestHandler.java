@@ -138,15 +138,15 @@ public class RequestHandler extends Thread {
 	public void responseError(OutputStream os, String protocol, String errorNum) throws IOException {
 		String url = "/error/" + errorNum + ".html";
 		String status = null;
+		File file = new File(DOCUMENT_ROOT + url);
+		byte[] body = Files.readAllBytes(file.toPath());
+		String contentType = Files.probeContentType(file.toPath());
+		
 		if ("404".equals(errorNum)) {
 			status = " 404 File Not Found";
 		} else if ("400".equals(errorNum)) {
 			status = " 400 Bad Request";
 		}
-		
-		File file = new File(DOCUMENT_ROOT + url);
-		byte[] body = Files.readAllBytes(file.toPath());
-		String contentType = Files.probeContentType(file.toPath());
 
 		// 응답
 		os.write((protocol + status + "\r\n").getBytes("UTF-8"));
