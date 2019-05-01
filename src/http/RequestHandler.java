@@ -2,18 +2,30 @@ package http;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.util.Arrays;
 
 public class RequestHandler extends Thread {
-	private static final String DOCUMENT_ROOT = "./webapp";
+	private static String documentRoot = "";
+	// 클래스가 로딩될때 실행이 됨 static 필드
+	static {
+		try {
+			//절대경로로 변경
+			documentRoot = new File(RequestHandler.class.getProtectionDomain().getCodeSource().getLocation().toURI())
+					.getPath();
+			documentRoot += "/webapp";
+			System.out.println("@@@@@@@"+documentRoot+"@@@@@@@");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	private Socket socket;
 
 	public RequestHandler(Socket socket) {
@@ -105,7 +117,7 @@ public class RequestHandler extends Thread {
 //			e.printStackTrace();
 //		}
 
-		File file = new File(DOCUMENT_ROOT + url);
+		File file = new File(documentRoot + url);
 		if (file.exists() == false) {
 			// 응답 예시
 			/*
@@ -138,10 +150,10 @@ public class RequestHandler extends Thread {
 	public void responseError(OutputStream os, String protocol, String errorNum) throws IOException {
 		String url = "/error/" + errorNum + ".html";
 		String status = null;
-		File file = new File(DOCUMENT_ROOT + url);
+		File file = new File(documentRoot + url);
 		byte[] body = Files.readAllBytes(file.toPath());
 		String contentType = Files.probeContentType(file.toPath());
-		
+
 		if ("404".equals(errorNum)) {
 			status = " 404 File Not Found";
 		} else if ("400".equals(errorNum)) {

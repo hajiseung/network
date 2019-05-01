@@ -35,7 +35,7 @@ public class EchoClient {
 				// 5. 키보드 입력 받기
 				System.out.print(">>");
 				String line = scn.nextLine();
-				if ("quit".equals(line)) {
+				if ("quit".contentEquals(line)) {
 					break;
 				}
 				// 6.데이터 쓰기

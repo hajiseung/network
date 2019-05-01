@@ -21,7 +21,6 @@ public class EchoServer {
 				// 3. Accept
 				// : 클라이언트의 연결요청을 기다린다.
 				Socket socket = serverSocket.accept(); // blocking(잠시 멈춘다.)
-
 				Thread thread = new EchoServerReceiveThread(socket);
 				thread.start();
 			}

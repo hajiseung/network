@@ -45,7 +45,6 @@ public class EchoServerReceiveThread extends Thread {
 			}
 
 		} catch (SocketException e) {
-//			e.printStackTrace();
 			System.out.println("[Server] Sudden closed");
 		} catch (IOException e) {
 			e.printStackTrace();
