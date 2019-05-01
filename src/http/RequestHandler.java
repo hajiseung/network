@@ -3,27 +3,29 @@ package http;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 
 public class RequestHandler extends Thread {
 	private static String documentRoot = "";
 	// 클래스가 로딩될때 실행이 됨 static 필드
 	static {
-		try {
-			//절대경로로 변경
-			documentRoot = new File(RequestHandler.class.getProtectionDomain().getCodeSource().getLocation().toURI())
-					.getPath();
-			documentRoot += "/webapp";
-			System.out.println("@@@@@@@"+documentRoot+"@@@@@@@");
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+		// 절대경로로 변경
+//			documentRoot = new File(RequestHandler.class.getProtectionDomain().getCodeSource().getLocation().toURI())
+//					.getPath();
+//			documentRoot += "/webapp";
+//		} catch (URISyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		documentRoot = RequestHandler.class.getClass().getResource("/webapp").getPath();
+		InputStream is = RequestHandler.class.getClass().getResourceAsStream("/webapp/index.html");
+		System.out.println(documentRoot);
 	}
 
 	private Socket socket;
